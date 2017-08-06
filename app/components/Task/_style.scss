@@ -1,0 +1,37 @@
+.task-component {
+  margin: auto;
+  max-width: 400px;
+
+  ul {
+    padding: 0;
+
+    li {
+      display: flex;
+      padding: 10px;
+      border: 1px solid #000;
+
+      .content {
+        flex: 1;
+        text-align: left;
+      }
+    }
+  }
+
+  .task-form-component {
+    display: flex;
+
+    input {
+      flex: 1;
+      height: 20px;
+      outline: none;
+    }
+
+    button {
+      width: 50px;
+    }
+
+    .error {
+      color: red;
+    }
+  }
+}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import logo from 'assets/images/logo.svg';
+import Task from 'components/Task';
 
 class Home extends Component {
   constructor(props) {
@@ -18,11 +19,13 @@ class Home extends Component {
   }
 
   render() {
+    const { message } = this.state;
+
     return (
       <div className="home-component">
         <div className="header">
           <img src={logo} className="logo" alt="logo" />
-          <h2>{this.state.message}</h2>
+          <h2>{message}</h2>
         </div>
         <p className="intro">
           To get started, edit <code>app/components/Home/index.js</code> and save to reload.
@@ -30,6 +33,7 @@ class Home extends Component {
         <p className="intro">
           The project was created by create-react-app, see more at <a href="https://github.com/facebookincubator/create-react-app">here</a>
         </p>
+        <Task />
       </div>
     );
   }
