@@ -2,6 +2,7 @@
 require('babel-register');
 require('babel-polyfill');
 
+const path = require('path');
 const express = require('express');
 const cookieParser = require('cookie-parser');
 const methodOverride = require('method-override');
@@ -19,12 +20,19 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(methodOverride('X-HTTP-Method-Override'))
 app.use(session({ secret, resave: false, saveUninitialized: true }))
+app.use(express.static(path.join(__dirname, '../build/')));
 
 /** Config routers */
 app.use('/api/v1.0.0', RoutesV1)
 app.use('/api/v1.0.0/connected', (req, res) => {
   res.json({ message: 'Connected api' });
 });
+
+if (!isDeveloping) {
+  app.get('*', function response(req, res) {
+    res.sendFile(path.join(__dirname, '../build/index.html'))
+  })
+}
 
 app.listen(port, '0.0.0.0', function onStart(err) {
   if (err) {
