@@ -1,6 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './assets/scss/theme.scss';
-import Home from './components/Home';
+import { render } from 'react-dom';
+import { BrowserRouter } from 'react-router-dom';
+import App from 'pages';
 
-ReactDOM.render(<Home />, document.getElementById('root'));
+render(<BrowserRouter><App /></BrowserRouter>, document.getElementById('root'));

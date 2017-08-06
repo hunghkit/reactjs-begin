@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import logo from 'assets/images/logo.svg';
 import Task from 'components/Task';
+import axios from 'axios';
 
 class Home extends Component {
   constructor(props) {
@@ -12,8 +13,8 @@ class Home extends Component {
   }
 
   componentWillMount() {
-    fetch('/api/v1.0.0/connected')
-      .then((res) => res.json())
+    axios.get('/api/v1.0.0/connected')
+      .then((res) => res.data)
       .then(({ message }) => this.setState({ message }))
       .catch((err) => this.setState({ message: err.toString() }))
   }

@@ -29,9 +29,11 @@ app.use('/api/v1.0.0/connected', (req, res) => {
 });
 
 if (!isDeveloping) {
-  app.get('*', function response(req, res) {
-    res.sendFile(path.join(__dirname, '../build/index.html'))
-  })
+  const ClientAsset = path.join(__dirname, '../build/asset-manifest.json');
+  const ServerRendererPath = path.join(__dirname, '../build/static/js/server.js');
+  const ServerRenderer = require(ServerRendererPath).default;
+  const Stats = require(ClientAsset);
+  app.use(ServerRenderer(Stats));
 }
 
 app.listen(port, '0.0.0.0', function onStart(err) {

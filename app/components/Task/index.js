@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Form from './Form';
+import axios from 'axios';
 
 export class Task extends Component {
   constructor(props) {
@@ -14,8 +15,8 @@ export class Task extends Component {
   }
 
   componentDidMount() {
-    fetch('/api/v1.0.0/tasks')
-      .then((res) => res.json())
+    axios.get('/api/v1.0.0/tasks')
+      .then((res) => res.data)
       .then(({ tasks }) => this.setState({ tasks: tasks.reduce((obj, item) => ({ ...obj, [item._id]: item }), {}) }))
       .catch((err) => this.setState({ message: err.toString() }))
   }
@@ -31,7 +32,7 @@ export class Task extends Component {
 
   onDelete(e, id) {
     e.preventDefault()
-    if (window.confirm("Are you sure?")) {
+    if (window.confirm("Are you sure?")) { // eslint-disable-line
       const { tasks = {} } = this.state;
       delete tasks[id];
       this.setState({ tasks: { ...tasks } })
@@ -60,7 +61,7 @@ export class Task extends Component {
       <div className="task-component">
         <Form ref={(ref) => this.form = ref} onSuccess={this.onSuccess} />
         <ul>
-          {Object.values(tasks).map(this.renderTask)}
+          {Object.keys(tasks).map((key, index) => this.renderTask(tasks[key], index))}
         </ul>
       </div>
     );

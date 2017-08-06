@@ -1,8 +1,11 @@
 {
   "name": "reactjs-beginning",
   "version": "0.1.0",
+  "author": "hunghk",
   "private": true,
+  "license": "MIT",
   "dependencies": {
+    "axios": "^0.16.2",
     "babel-polyfill": "^6.23.0",
     "babel-register": "^6.24.1",
     "body-parser": "^1.17.2",
@@ -11,7 +14,9 @@
     "express-session": "^1.15.5",
     "method-override": "^2.3.9",
     "mongoose": "^4.11.5",
-    "morgan": "^1.8.2"
+    "morgan": "^1.8.2",
+    "babel-preset-react-app": "^3.0.1",
+    "eslint-config-react-app": "^1.0.5"
   },
   "devDependencies": {
     "autoprefixer": "7.1.1",
@@ -27,7 +32,6 @@
     "css-loader": "0.28.4",
     "dotenv": "4.0.0",
     "eslint": "3.19.0",
-    "eslint-config-react-app": "^1.0.5",
     "eslint-loader": "1.7.1",
     "eslint-plugin-flowtype": "2.34.0",
     "eslint-plugin-import": "2.2.0",
@@ -48,20 +52,23 @@
     "react-dev-utils": "^3.0.2",
     "react-dom": "^15.6.1",
     "react-error-overlay": "^1.0.9",
+    "react-helmet": "^5.1.3",
+    "react-router-dom": "^4.1.2",
     "sass-loader": "^6.0.6",
+    "stats-webpack-plugin": "^0.6.1",
     "style-loader": "0.18.2",
     "sw-precache-webpack-plugin": "0.11.3",
     "url-loader": "0.5.9",
     "webpack": "2.6.1",
     "webpack-dev-server": "2.5.0",
-    "webpack-manifest-plugin": "1.1.0",
-    "whatwg-fetch": "2.0.3"
+    "webpack-manifest-plugin": "1.1.0"
   },
   "scripts": {
     "start": "node scripts/start.js",
     "server": "cross-env NODE_ENV=development nodemon server",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "test": "node scripts/test.js --env=jsdom",
+    "prod": "cross-env NODE_ENV=production PORT=3003 nodemon server"
   },
   "keywords": [
     "express",
@@ -74,14 +81,14 @@
   "proxy": "http://localhost:3000",
   "jest": {
     "collectCoverageFrom": [
-      "src/**/*.{js,jsx}"
+      "app/**/*.{js,jsx}"
     ],
     "setupFiles": [
       "<rootDir>/config/polyfills.js"
     ],
     "testMatch": [
-      "<rootDir>/src/**/__tests__/**/*.js?(x)",
-      "<rootDir>/src/**/?(*.)(spec|test).js?(x)"
+      "<rootDir>/app/**/__tests__/**/*.js?(x)",
+      "<rootDir>/app/**/?(*.)(spec|test).js?(x)"
     ],
     "testEnvironment": "node",
     "testURL": "http://localhost",
@@ -90,6 +97,7 @@
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
       "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
+    "moduleDirectories": ["node_modules", "app"],
     "transformIgnorePatterns": [
       "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
     ],

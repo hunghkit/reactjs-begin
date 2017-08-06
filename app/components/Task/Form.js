@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 
 export class Form extends Component {
   static propTypes = {
@@ -30,24 +31,18 @@ export class Form extends Component {
     e.preventDefault();
     const { id, title } = this.state;
     let url = '/api/v1.0.0/tasks/';
-    let method = 'POST';
+    let method = 'post';
     let isNew = true;
     if (id) {
       url += id;
-      method = 'PUT';
+      method = 'put';
       isNew = false;
     }
 
     this.setState({ error: '' });
 
-    fetch(url, {
-        method,
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ task: { title } })
-      })
-      .then((res) => res.json())
+    axios[method](url, { task: { title } })
+      .then((res) => res.data)
       .then(({ task, success, message }) => {
         if(success) {
           this.setState({ title: '' });
