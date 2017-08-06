@@ -9,9 +9,10 @@
 5. Start dev server: `yarn run server` || `npm run server`
 ## Deployment
 - Setup:
-`heroku create $APP_NAME`
-`heroku buildpacks:add --index 1` `https://github.com/hunghkit/create-react-app-buildpack.git `
-`heroku buildpacks:add --index 2 heroku/ruby`
+1. `heroku create $APP_NAME`
+2. `heroku buildpacks:add --index 1`
+3. `https://github.com/hunghkit/create-react-app-buildpack.git `
+4. `heroku buildpacks:add --index 2 heroku/nodejs`
 - Deploy:
 `git push heroku yourbanch:master`
 ## Todo next
