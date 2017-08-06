@@ -2,12 +2,27 @@ import React, { Component } from 'react';
 import logo from 'assets/images/logo.svg';
 
 class Home extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      message: 'Welcome to ReactJS Begin'
+    };
+  }
+
+  componentWillMount() {
+    fetch('/api/v1.0.0/connected')
+      .then((res) => res.json())
+      .then(({ message }) => this.setState({ message }))
+      .catch((err) => this.setState({ message: err.toString() }))
+  }
+
   render() {
     return (
       <div className="home-component">
         <div className="header">
           <img src={logo} className="logo" alt="logo" />
-          <h2>Welcome to ReactJS Begin</h2>
+          <h2>{this.state.message}</h2>
         </div>
         <p className="intro">
           To get started, edit <code>app/components/Home/index.js</code> and save to reload.
