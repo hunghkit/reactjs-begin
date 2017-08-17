@@ -7,16 +7,16 @@
   "dependencies": {
     "axios": "^0.16.2",
     "babel-polyfill": "^6.23.0",
+    "babel-preset-react-app": "^3.0.1",
     "babel-register": "^6.24.1",
     "body-parser": "^1.17.2",
     "cookie-parser": "^1.4.3",
+    "eslint-config-react-app": "^1.0.5",
     "express": "^4.15.3",
     "express-session": "^1.15.5",
     "method-override": "^2.3.9",
     "mongoose": "^4.11.5",
-    "morgan": "^1.8.2",
-    "babel-preset-react-app": "^3.0.1",
-    "eslint-config-react-app": "^1.0.5"
+    "morgan": "^1.8.2"
   },
   "devDependencies": {
     "autoprefixer": "7.1.1",
@@ -47,6 +47,7 @@
     "object-assign": "4.1.1",
     "postcss-flexbugs-fixes": "3.0.0",
     "postcss-loader": "2.0.6",
+    "pre-commit": "^1.2.2",
     "promise": "7.1.1",
     "react": "^15.6.1",
     "react-dev-utils": "^3.0.2",
@@ -65,11 +66,13 @@
   },
   "scripts": {
     "start": "node scripts/start.js",
+    "eslint": "eslint --ignore-path .gitignore app/** server/**",
     "server": "cross-env NODE_ENV=development nodemon server",
     "build": "node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "prod": "cross-env NODE_ENV=production PORT=3003 nodemon server"
   },
+  "pre-commit": "eslint",
   "keywords": [
     "express",
     "webpack",
@@ -97,7 +100,10 @@
       "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
       "^(?!.*\\.(js|jsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
     },
-    "moduleDirectories": ["node_modules", "app"],
+    "moduleDirectories": [
+      "node_modules",
+      "app"
+    ],
     "transformIgnorePatterns": [
       "[/\\\\]node_modules[/\\\\].+\\.(js|jsx)$"
     ],
