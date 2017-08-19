@@ -1,42 +1,28 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { onAddTasks, onRemoveTask } from 'actions/task';
 import Form from './Form';
-import axios from 'axios';
 
 export class Task extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      tasks: {},
-    };
-
     this.renderTask = this.renderTask.bind(this);
     this.onSuccess = this.onSuccess.bind(this);
     this.onDelete = this.onDelete.bind(this);
   }
 
-  componentDidMount() {
-    axios.get('/api/v1.0.0/tasks')
-      .then((res) => res.data)
-      .then(({ tasks }) => this.setState({ tasks: tasks.reduce((obj, item) => ({ ...obj, [item._id]: item }), {}) }))
-      .catch((err) => this.setState({ message: err.toString() }))
+  componentWillMount() {
+    this.props.onAddTasks();
   }
 
   onSuccess(task, isNew) {
-    if (isNew) this.setState((pre) => ({ tasks: { [task._id]: task, ...pre.tasks } }))
-    else this.setState((pre) => {
-      const tasks = pre.tasks || {};
-      tasks[task._id] = task;
-      return tasks;
-    });
+    this.props.onAddTasks({ [task._id]: task, ...this.props.tasks });
   }
 
   onDelete(e, id) {
     e.preventDefault()
     if (window.confirm("Are you sure?")) { // eslint-disable-line
-      const { tasks = {} } = this.state;
-      delete tasks[id];
-      this.setState({ tasks: { ...tasks } })
-      fetch(`/api/v1.0.0/tasks/${id}`, { method: 'DELETE' })
+      this.props.onRemoveTask(id);
     }
   }
 
@@ -55,7 +41,7 @@ export class Task extends Component {
   }
 
   render() {
-    const { tasks = {} } = this.state;
+    const { tasks = {} } = this.props;
 
     return (
       <div className="task-component">
@@ -68,4 +54,12 @@ export class Task extends Component {
   }
 }
 
-export default Task
+
+const mapStateToProps = ({ tasks }) => ({ tasks });
+
+const mapDispatchToProps = (dispatch) => ({
+  onAddTasks: (tasks) => dispatch(onAddTasks(tasks)),
+  onRemoveTask: (id) => dispatch(onRemoveTask(id)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Task);

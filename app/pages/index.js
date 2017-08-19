@@ -1,9 +1,7 @@
 import React from 'react';
 import Helmet from "react-helmet";
-import { Switch, Route } from 'react-router-dom';
 import 'assets/scss/theme.scss';
-
-import Home from 'components/Home';
+import Routes from './routes';
 
 const Pages = () => (
   <div className="page-container">
@@ -16,10 +14,8 @@ const Pages = () => (
         {name: "viewport", content: "width=device-width, initial-scale=1"},
       ]}
     />
-    <Switch router={{}}>
-      <Route exact path='/' component={Home} />
-    </Switch>
+    <Routes />
   </div>
-);
+)
 
 export default Pages;

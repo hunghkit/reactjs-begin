@@ -16,7 +16,11 @@
     "express-session": "^1.15.5",
     "method-override": "^2.3.9",
     "mongoose": "^4.11.5",
-    "morgan": "^1.8.2"
+    "morgan": "^1.8.2",
+    "react-redux": "^5.0.6",
+    "react-router": "^4.1.2",
+    "redux": "^3.7.2",
+    "redux-thunk": "^2.2.0"
   },
   "devDependencies": {
     "autoprefixer": "7.1.1",
@@ -65,10 +69,13 @@
     "webpack-manifest-plugin": "1.1.0"
   },
   "scripts": {
-    "start": "node scripts/start.js",
+    "start": "cross-env BASE_URL=http://localhost:3001 node scripts/start.js",
     "eslint": "eslint --ignore-path .gitignore app/** server/**",
     "server": "cross-env NODE_ENV=development nodemon server",
     "build": "node scripts/build.js",
+    "build:start": "cross-env NODE_ENV=production PORT=3003 nodemon server",
+    "prebuild:start": "cross-env BASE_URL=http://localhost:3003 node scripts/build.js",
+    "build:dev": "cross-env BASE_URL=http://localhost:3003 node scripts/build.js",
     "test": "node scripts/test.js --env=jsdom",
     "prod": "cross-env NODE_ENV=production PORT=3003 nodemon server"
   },

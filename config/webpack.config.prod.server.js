@@ -9,7 +9,7 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
-const StatsPlugin = require('stats-webpack-plugin');
+// const StatsPlugin = require('stats-webpack-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -31,7 +31,7 @@ if (env.stringified['process.env'].NODE_ENV !== '"production"') {
 }
 
 // Note: defined here because it will be used more than once.
-const cssFilename = 'static/css/theme.[contenthash:12].css';
+const cssFilename = 'static/css/[name].[contenthash:8].css';
 
 // ExtractTextPlugin expects the build output to be flat.
 // (See https://github.com/webpack-contrib/extract-text-webpack-plugin/issues/27)
@@ -45,22 +45,24 @@ const extractTextPluginOptions = shouldUseRelativeAssetPaths
 // This is the production configuration.
 // It compiles slowly and is focused on producing a fast and minimal bundle.
 // The development configuration is different and lives in a separate file.
-module.exports = (options) => ({
+module.exports = {
   // Don't attempt to continue if there are any errors.
   bail: true,
+  name: 'server',
+  target: 'node',
   // We generate sourcemaps in production. This is slow but gives good results.
   // You can exclude the *.map files from the build during deployment.
   devtool: 'source-map',
   // In production, we only want to load the polyfills and the app code.
-  entry: [require.resolve('./polyfills'), options.target === 'node' ? paths.serverIndexJs : paths.appIndexJs],
-  output: Object.assign({
+  entry: [require.resolve('./polyfills'), paths.serverIndexJs],
+  output: {
     // The build folder.
     path: paths.appBuild,
+    libraryTarget: 'commonjs',
     // Generated JS file names (with nested folders).
     // There will be one main bundle, and one file per asynchronous chunk.
     // We don't currently advertise code splitting but Webpack supports it.
-    filename: 'static/js/[name].js',
-    chunkFilename: 'static/js/[name].chunk.js',
+    filename: 'static/js/server.js',
     // We inferred the "public path" (such as / or /my-project) from homepage.
     publicPath: publicPath,
     // Point sourcemap entries to original disk location (format as URL on Windows)
@@ -68,7 +70,7 @@ module.exports = (options) => ({
       path
         .relative(paths.appSrc, info.absoluteResourcePath)
         .replace(/\\/g, '/'),
-  }, options.output),
+  },
   resolve: {
     // This allows you to set a fallback for where Webpack should look for modules.
     // We placed these paths second because we want `node_modules` to "win"
@@ -276,6 +278,7 @@ module.exports = (options) => ({
       staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
       stripPrefix: paths.appBuild.replace(/\\/g, '/') + '/',
     }),
+    new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.
@@ -284,5 +287,6 @@ module.exports = (options) => ({
     fs: 'empty',
     net: 'empty',
     tls: 'empty',
+    process: true,
   },
-});
+};

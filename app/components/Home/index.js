@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
 import logo from 'assets/images/logo.svg';
 import Task from 'components/Task';
-import axios from 'axios';
+import axios from 'services/axios';
+import Helmet from "react-helmet";
+import { onAddTasks } from 'actions/task';
 
 class Home extends Component {
+  static preRender(store, params) {
+    return store.dispatch(onAddTasks());
+  }
+
   constructor(props) {
     super(props);
 
@@ -24,6 +30,13 @@ class Home extends Component {
 
     return (
       <div className="home-component">
+        <Helmet
+          title="Homepage of reactjs begin"
+          meta={[
+            { name: "description", content: "Start project reactjs and node on in one. Rerender server support for seo on reactjs" },
+            { name: "keyword", content: "reactjs, redux, render server, nodejs" },
+          ]}
+        />
         <div className="header">
           <img src={logo} className="logo" alt="logo" />
           <h2>{message}</h2>

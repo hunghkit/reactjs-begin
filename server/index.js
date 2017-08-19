@@ -20,7 +20,7 @@ app.use(bodyParser.json())
 app.use(cookieParser())
 app.use(methodOverride('X-HTTP-Method-Override'))
 app.use(session({ secret, resave: false, saveUninitialized: true }))
-app.use(express.static(path.join(__dirname, '../build/')));
+app.use(express.static(path.join(__dirname, '../build/'), { index: false }));
 
 /** Config routers */
 app.use('/api/v1.0.0', RoutesV1)
