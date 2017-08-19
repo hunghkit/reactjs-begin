@@ -5,7 +5,7 @@ module.exports = {
     Model.tasks.find({})
       .sort({ createdAt: 'desc' })
       .then((tasks) => res.json({ success: true, tasks }))
-      .catch((error) => res.json({ success: false, error }))
+      .catch((error) => res.json({ success: false, error }));
   },
 
   create(req, res) {
@@ -14,7 +14,7 @@ module.exports = {
     const newTask = new Model.tasks({ title: task.title });
     newTask.save()
       .then((rs) => res.json({ success: true, task: rs }))
-      .catch((error) => res.json({ success: false, error }))
+      .catch((error) => res.json({ success: false, error }));
   },
 
   update(req, res) {
@@ -23,19 +23,19 @@ module.exports = {
     Model.tasks.findOne({ _id })
       .then((rs) => {
         const { task = {} } = req.body || {};
-        rs.title = task.title || rs.title
-        return rs.save()
+        rs.title = task.title || rs.title;
+        return rs.save();
       })
       .then((rs) => res.json({ success: true, task: rs }))
-      .catch((error) => res.json({ success: false, error }))
+      .catch((error) => res.json({ success: false, error }));
   },
 
   destroy(req, res) {
-    const { _id } = req.params
+    const { _id } = req.params;
 
     Model.tasks.findOne({ _id })
       .then((rs) => rs.remove())
       .then((rs) => res.json({ success: true, task: rs }))
-      .catch((error) => res.json({ success: false, error }))
+      .catch((error) => res.json({ success: false, error }));
   },
 };

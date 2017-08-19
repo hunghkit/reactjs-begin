@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="docs/images/banner.png">
+</p>
+
 ## Required
 1. Install mongodb [click here](https://docs.mongodb.com/manual/installation)
 2. Heroku account [click here](https://heroku.com) if you want to deploy with heroku

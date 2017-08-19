@@ -9,6 +9,7 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 // const StatsPlugin = require('stats-webpack-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
@@ -64,9 +65,9 @@ module.exports = {
     // We don't currently advertise code splitting but Webpack supports it.
     filename: 'static/js/server.js',
     // We inferred the "public path" (such as / or /my-project) from homepage.
-    publicPath: publicPath,
+    publicPath,
     // Point sourcemap entries to original disk location (format as URL on Windows)
-    devtoolModuleFilenameTemplate: info =>
+    devtoolModuleFilenameTemplate: (info) =>
       path
         .relative(paths.appSrc, info.absoluteResourcePath)
         .replace(/\\/g, '/'),
@@ -172,8 +173,8 @@ module.exports = {
                 sourceMap: true,
               },
             },
-            ]
-        }))
+          ],
+        })),
       },
       // Process JS with Babel.
       {
@@ -207,6 +208,7 @@ module.exports = {
                 {
                   loader: require.resolve('css-loader'),
                   options: {
+                    module: true,
                     importLoaders: 1,
                     minimize: true,
                     sourceMap: true,
@@ -273,12 +275,13 @@ module.exports = {
         console.log(message);
       },
       minify: true,
-      navigateFallback: publicUrl + '/index.html',
+      navigateFallback: `${publicUrl}/index.html`,
       navigateFallbackWhitelist: [/^(?!\/__).*/],
       staticFileGlobsIgnorePatterns: [/\.map$/, /asset-manifest\.json$/],
-      stripPrefix: paths.appBuild.replace(/\\/g, '/') + '/',
+      stripPrefix: `${paths.appBuild.replace(/\\/g, '/')}/`,
     }),
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new OptimizeCssAssetsPlugin(),
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.

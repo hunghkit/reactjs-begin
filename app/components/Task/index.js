@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { onAddTasks, onRemoveTask } from 'actions/task';
 import Form from './Form';
 
 export class Task extends Component {
+  static propTypes = {
+    tasks: PropTypes.object,
+    onAddTasks: PropTypes.func,
+    onRemoveTask: PropTypes.func,
+  }
   constructor(props) {
     super(props);
     this.renderTask = this.renderTask.bind(this);
@@ -15,12 +21,12 @@ export class Task extends Component {
     this.props.onAddTasks();
   }
 
-  onSuccess(task, isNew) {
-    this.props.onAddTasks({ [task._id]: task, ...this.props.tasks });
+  onSuccess(task) {
+    this.props.onAddTasks({ [task._id]: task, ...this.props.tasks }); //eslint-disable-line
   }
 
   onDelete(e, id) {
-    e.preventDefault()
+    e.preventDefault();
     if (window.confirm("Are you sure?")) { // eslint-disable-line
       this.props.onRemoveTask(id);
     }
@@ -33,7 +39,7 @@ export class Task extends Component {
           {title}
         </div>
         <div className="action">
-          <button onClick={(e) => this.form.onTask({ title, id })} >edit</button>
+          <button onClick={() => this.form.onTask({ title, id })} >edit</button>
           <button onClick={(e) => this.onDelete(e, id)} >delete</button>
         </div>
       </li>

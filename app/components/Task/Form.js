@@ -44,12 +44,12 @@ export class Form extends Component {
     axios[method](url, { task: { title } })
       .then((res) => res.data)
       .then(({ task, success, message }) => {
-        if(success) {
+        if (success) {
           this.setState({ title: '' });
           this.props.onSuccess(task, isNew);
-        } else this.setState({ error: message })
+        } else this.setState({ error: message });
       })
-      .catch((err) => this.setState({ error: err.toString() }))
+      .catch((err) => this.setState({ error: err.toString() }));
   }
 
   render() {

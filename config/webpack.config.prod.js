@@ -1,5 +1,3 @@
-'use strict';
-
 const autoprefixer = require('autoprefixer');
 const path = require('path');
 const webpack = require('webpack');
@@ -12,6 +10,7 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -63,9 +62,9 @@ module.exports = {
     // We don't currently advertise code splitting but Webpack supports it.
     filename: 'static/js/bundle.js',
     // We inferred the "public path" (such as / or /my-project) from homepage.
-    publicPath: publicPath,
+    publicPath,
     // Point sourcemap entries to original disk location (format as URL on Windows)
-    devtoolModuleFilenameTemplate: info =>
+    devtoolModuleFilenameTemplate: (info) =>
       path
         .relative(paths.appSrc, info.absoluteResourcePath)
         .replace(/\\/g, '/'),
@@ -179,8 +178,8 @@ module.exports = {
                 sourceMap: true,
               },
             },
-            ]
-        }))
+          ],
+        })),
       },
       // Process JS with Babel.
       {
@@ -188,7 +187,6 @@ module.exports = {
         include: paths.appSrc,
         loader: require.resolve('babel-loader'),
         options: {
-
           compact: true,
         },
       },
@@ -214,6 +212,7 @@ module.exports = {
                 {
                   loader: require.resolve('css-loader'),
                   options: {
+                    module: true,
                     importLoaders: 1,
                     minimize: true,
                     sourceMap: true,
@@ -330,7 +329,7 @@ module.exports = {
       },
       minify: true,
       // For unknown URLs, fallback to the index page
-      navigateFallback: publicUrl + '/index.html',
+      navigateFallback: `${publicUrl}/index.html`,
       // Ignores URLs starting from /__ (useful for Firebase):
       // https://github.com/facebookincubator/create-react-app/issues/2237#issuecomment-302693219
       navigateFallbackWhitelist: [/^(?!\/__).*/],
@@ -343,6 +342,7 @@ module.exports = {
     // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
     // You can remove this if you don't use Moment.js:
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new OptimizeCssAssetsPlugin(),
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.

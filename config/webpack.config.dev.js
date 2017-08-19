@@ -9,6 +9,7 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
+const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // In development, we always serve from the root. This makes config easier.
@@ -63,9 +64,9 @@ module.exports = {
     filename: 'static/js/bundle.js',
     // There are also additional JS chunk files if you use code splitting.
     // This is the URL that app is served from. We use "/" in development.
-    publicPath: publicPath,
+    publicPath,
     // Point sourcemap entries to original disk location (format as URL on Windows)
-    devtoolModuleFilenameTemplate: info =>
+    devtoolModuleFilenameTemplate: (info) =>
       path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
   },
   resolve: {
@@ -161,16 +162,18 @@ module.exports = {
       {
         test: /\.(scss|sass)$/,
         use: [{
-          loader: "style-loader"
+          loader: 'style-loader',
         }, {
-          loader: "css-loader", options: {
-            sourceMap: true
-          }
+          loader: 'css-loader',
+          options: {
+            sourceMap: true,
+          },
         }, {
-          loader: "sass-loader", options: {
-            sourceMap: true
-          }
-        }]
+          loader: 'sass-loader',
+          options: {
+            sourceMap: true,
+          },
+        }],
       },
       // Process JS with Babel.
       {
@@ -197,6 +200,7 @@ module.exports = {
           {
             loader: require.resolve('css-loader'),
             options: {
+              module: true,
               importLoaders: 1,
             },
           },
@@ -259,6 +263,7 @@ module.exports = {
     // https://github.com/jmblog/how-to-optimize-momentjs-with-webpack
     // You can remove this if you don't use Moment.js:
     new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/),
+    new OptimizeCssAssetsPlugin(),
   ],
   // Some libraries import Node modules but don't use them in the browser.
   // Tell Webpack to provide empty mocks for them so importing them works.

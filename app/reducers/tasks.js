@@ -5,7 +5,7 @@ import {
 export default (state = {}, { type, tasks }) => {
   switch (type) {
     case ADD_TASKS_LIST:
-      return tasks
+      return tasks;
     default:
       return state;
   }
