@@ -1,77 +1,64 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import axios from 'services/axios';
+import { connect } from 'react-redux';
+import TaskForm from 'components/Form/Task';
+import { change as changeFieldValue } from 'redux-form';
 
 export class Form extends Component {
   static propTypes = {
     onSuccess: PropTypes.func,
+    changeFieldValue: PropTypes.func,
   };
 
   static defaultProps = {
     onSuccess: () => {},
+    changeFieldValue: () => {},
   };
 
   constructor(props) {
     super(props);
-    this.state = {
-      title: '',
-      id: null,
-      error: '',
-    };
-
+    this.state = { message: '' };
     this.onTask = this.onTask.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onTask(task) {
-    this.setState({ ...task, error: '' });
+  onTask(task = {}) {
+    Object.entries(task).forEach((item) => this.props.changeFieldValue(...item));
   }
 
-  onSubmit(e) {
-    e.preventDefault();
-    const { id, title } = this.state;
+  onSubmit({ title, id }) {
     let url = '/api/v1.0.0/tasks/';
     let method = 'post';
     let isNew = true;
+
     if (id) {
       url += id;
       method = 'put';
       isNew = false;
     }
 
-    this.setState({ error: '' });
+    this.setState({ message: '' });
 
     axios[method](url, { task: { title } })
       .then((res) => res.data)
       .then(({ task, success, message }) => {
         if (success) {
-          this.setState({ title: '' });
           this.props.onSuccess(task, isNew);
-        } else this.setState({ error: message });
+          this.form.reset();
+        } else this.setState({ message });
       })
-      .catch((err) => this.setState({ error: err.toString() }));
+      .catch((err) => this.setState({ message: err.toString() }));
   }
 
   render() {
-    const { title, id, error } = this.state;
-    const button = !id ? 'Add' : 'Edit';
-
-    return (
-      <form className="task-form-component" onSubmit={this.onSubmit}>
-        {!!error && <div className="error">{error}</div>}
-
-        <input
-          required
-          name="title"
-          value={title || ''}
-          ref={(ref) => this.title = ref}
-          onChange={(e) => this.setState({ title: e.target.value })}
-        />
-        <button type="submit">{button}</button>
-        <button onClick={() => this.setState({ title: '', id: '', error: '' })}>X</button>
-      </form>
-    );
+    const { message } = this.state;
+    return <TaskForm ref={(ref) => (this.form = ref)} onSubmit={this.onSubmit} message={message} />;
   }
 }
 
-export default Form;
+const dispatchToProps = (dispatch) => ({
+  changeFieldValue: (field, value) => dispatch(changeFieldValue('task', field, value)),
+});
+
+export default connect(null, dispatchToProps, null, { withRef: true })(Form);
