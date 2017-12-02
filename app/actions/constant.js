@@ -1,1 +1,2 @@
 export const ADD_TASKS_LIST = 'ADD_TASKS_LIST';
+export const SET_CURRENT_USER = 'SET_CURRENT_USER';

@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import Helmet from 'react-helmet';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 import { Loading } from 'components/Loaders';
+import { withRouter } from 'react-router-dom';
+import axios from 'services/axios';
 import 'assets/scss/theme.scss';
+import { onSetCurrentUser } from 'actions/currentUser';
 import Routes from './routes';
 
 class Pages extends Component {
   static propTypes = {
+    setUser: PropTypes.func,
     isServer: PropTypes.bool,
   };
 
@@ -15,9 +20,18 @@ class Pages extends Component {
     this.state = { loaded: false };
   }
 
+  componentWillMount() {
+    axios.get('/api/v1.0.0/auth')
+        .then((res) => res.data)
+        .then(({ user }) => {
+          if (user) this.props.setUser(user);
+        });
+  }
 
   componentDidMount() {
-    document.body.onload = () => this.setState({ loaded: true });
+    document.body.onload = () => {
+      this.setState({ loaded: true });
+    };
   }
 
   render() {
@@ -42,4 +56,8 @@ class Pages extends Component {
   }
 }
 
-export default Pages;
+const mapDispatchToProps = (dispatch) => ({
+  setUser: (user = {}) => dispatch(onSetCurrentUser(user)),
+});
+
+export default withRouter(connect(null, mapDispatchToProps)(Pages));

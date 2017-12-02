@@ -1,35 +1,34 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import logo from 'assets/images/banner.png';
 import Task from 'components/Task';
-import axios from 'services/axios';
 import Helmet from 'react-helmet';
 import { onAddTasks } from 'actions/task';
+import { isAuth } from 'services/isAuth';
 
 class Home extends Component {
   static preRender(store) {
     return store.dispatch(onAddTasks());
   }
 
+  static propTypes = {
+    setUser: PropTypes.func,
+    currentUser: PropTypes.object,
+  };
+
   constructor(props) {
     super(props);
-
     this.state = {
       message: 'Welcome to ReactJS Begin',
     };
   }
 
-  componentWillMount() {
-    axios.get('/api/v1.0.0/connected')
-      .then((res) => res.data)
-      .then(({ message }) => this.setState({ message }))
-      .catch((err) => this.setState({ message: err.toString() }));
-  }
-
   render() {
     const { message } = this.state;
+    const { currentUser = {}, setUser = () => {} } = this.props;
 
     return (
-      <div className="home-component">
+      <div className="home-pages">
         <Helmet
           title="Homepage of reactjs begin"
           meta={[
@@ -40,6 +39,7 @@ class Home extends Component {
         <div className="header">
           <img src={logo} className="logo" alt="logo" />
           <h2>{message}</h2>
+          <h2>{currentUser.username} <button onClick={() => setUser()}>logout</button></h2>
         </div>
         <p className="intro">
           To get started <a href="https://github.com/hunghkit/reactjs-begin">click here</a>
@@ -53,4 +53,4 @@ class Home extends Component {
   }
 }
 
-export default Home;
+export default isAuth(Home);

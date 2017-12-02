@@ -10,8 +10,9 @@
 1. `git clone git@github.com:hunghkit/reactjs-begin.git`
 2. `yarn install` || `npm install`
 3. Start mongodb: `mongod`
-4. Start dev reactjs: `yarn start` || `npm start`
-5. Start dev server: `yarn run server` || `npm run server`
+4. Add ENV: cp .env.example .env
+5. Start dev reactjs: `yarn start` || `npm start`
+6. Start dev server: `yarn server` || `npm run server`
 ## Add route in project
 Edit file app/pages/routes.js
 
@@ -45,7 +46,10 @@ Look example at file app/components
 4. Deploy with heroku
 5. React router
 6. Integrate redux
-7. Example with REST
+7. Integrate redux-form
+8. JWT in server
+9. React-Toolbox
+10. Example with REST
 ## Relation
 1. With reactjs see more [create react app](https://github.com/facebookincubator/create-react-app)
 2. Proxy with development, you change port or url in proxy in package.json
@@ -54,5 +58,6 @@ Look example at file app/components
 5. Api with express see more [click here](https://expressjs.com/en/guide/routing.html)
 6. Database with mongoosejs see more [click here](http://mongoosejs.com/docs/guide.html)
 7. Deployment with aws through Elastic Beanstalk [click here](http://docs.aws.amazon.com/elasticbeanstalk/latest/dg/eb-cli3-install.html)
+8. Dotenv [click here](https://github.com/bkeepers/dotenv)
 ## Demo [click here](https://reactjs-begin.herokuapp.com)
 ## Licence: MIT

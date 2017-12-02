@@ -1,0 +1,19 @@
+.form-shared {
+  width: 100%;
+  padding: 50px;
+  max-width: 300px;
+  margin: 50px auto;
+
+  .btn-group {
+    margin-top: 30px;
+    text-align: center;
+
+    button {
+      margin: 5px;
+    }
+  }
+
+  .error {
+    color: red;
+  }
+}

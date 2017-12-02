@@ -23,6 +23,7 @@ app.use(express.static(path.join(__dirname, '../build/'), { index: false }));
 
 /** Config routers */
 RoutesV1(app);
+
 app.use('/api/v1.0.0/connected', (req, res) => {
   res.json({ message: 'Connected api' });
 });

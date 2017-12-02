@@ -17,5 +17,6 @@ body {
   }
 }
 
-@import '~components/Home/style';
+@import './shared/form';
+@import '~pages/Home/style';
 @import '~components/Task/style';
