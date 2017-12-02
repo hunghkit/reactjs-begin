@@ -1,6 +1,6 @@
-const Model = require('../models');
+import Model from '../models';
 
-module.exports = {
+export default {
   index: (req, res) => {
     Model.tasks.find({})
       .sort({ createdAt: 'desc' })
