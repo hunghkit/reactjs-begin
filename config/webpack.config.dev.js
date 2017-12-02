@@ -9,6 +9,7 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const getClientEnvironment = require('./env');
 const paths = require('./paths');
+const cssnext = require('postcss-cssnext');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
@@ -200,8 +201,10 @@ module.exports = {
           {
             loader: require.resolve('css-loader'),
             options: {
-              module: true,
+              modules: true, // default is false
+              sourceMap: true,
               importLoaders: 1,
+              localIdentName: '[name]--[local]--[hash:base64:8]',
             },
           },
           {
@@ -212,6 +215,7 @@ module.exports = {
               ident: 'postcss',
               plugins: () => [
                 require('postcss-flexbugs-fixes'),
+                cssnext,
                 autoprefixer({
                   browsers: [
                     '>1%',

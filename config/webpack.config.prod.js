@@ -10,6 +10,7 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
+const cssnext = require('postcss-cssnext');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
@@ -49,6 +50,8 @@ const extractTextPluginOptions = shouldUseRelativeAssetPaths
 module.exports = {
   // Don't attempt to continue if there are any errors.
   bail: true,
+  target: 'web',
+  name: 'bundle',
   // We generate sourcemaps in production. This is slow but gives good results.
   // You can exclude the *.map files from the build during deployment.
   devtool: 'source-map',
@@ -212,10 +215,10 @@ module.exports = {
                 {
                   loader: require.resolve('css-loader'),
                   options: {
-                    module: true,
                     importLoaders: 1,
                     minimize: true,
                     sourceMap: true,
+                    modules: true, // default is false
                   },
                 },
                 {
@@ -226,6 +229,7 @@ module.exports = {
                     ident: 'postcss',
                     plugins: () => [
                       require('postcss-flexbugs-fixes'),
+                      cssnext,
                       autoprefixer({
                         browsers: [
                           '>1%',
@@ -298,6 +302,7 @@ module.exports = {
     }),
     // Note: this won't work without ExtractTextPlugin.extract(..) in `loaders`.
     new ExtractTextPlugin({
+      allChunks: true,
       filename: cssFilename,
     }),
     // Generate a manifest file which contains a mapping of all asset filenames

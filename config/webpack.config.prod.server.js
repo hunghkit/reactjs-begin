@@ -9,8 +9,8 @@ const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const ModuleScopePlugin = require('react-dev-utils/ModuleScopePlugin');
 const paths = require('./paths');
 const getClientEnvironment = require('./env');
+const cssnext = require('postcss-cssnext');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-// const StatsPlugin = require('stats-webpack-plugin');
 
 // Webpack uses `publicPath` to determine where the app is being served from.
 // It requires a trailing slash, or the file assets will get an incorrect path.
@@ -208,10 +208,10 @@ module.exports = {
                 {
                   loader: require.resolve('css-loader'),
                   options: {
-                    module: true,
                     importLoaders: 1,
                     minimize: true,
                     sourceMap: true,
+                    modules: true, // default is false
                   },
                 },
                 {
@@ -222,6 +222,7 @@ module.exports = {
                     ident: 'postcss',
                     plugins: () => [
                       require('postcss-flexbugs-fixes'),
+                      cssnext,
                       autoprefixer({
                         browsers: [
                           '>1%',
