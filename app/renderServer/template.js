@@ -6,6 +6,7 @@ export default ({ markup, helmet, assets }) => (`
       ${helmet.meta.toString()}
       ${helmet.link.toString()}
       <link href="/${assets['main.css']}" rel="stylesheet">
+      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     </head>
     <body ${helmet.bodyAttributes.toString()}>
       <div id="root">${markup}</div>

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import { matchPath } from 'react-router';
 import { StaticRouter } from 'react-router-dom';
+import { CookiesProvider } from 'react-cookie';
 import { Helmet } from 'react-helmet';
 import { Provider } from 'react-redux';
 import App from 'pages';
@@ -24,25 +25,24 @@ const matchRoutes = (routesArr, location, storeArg) =>
       .map(props => props.component.preRender(storeArg, location))
   );
 
-export default (assets) =>
-  (req, res) => {
-    matchRoutes(routes(), req.url, store)
-      .then(() => {
-        const context = {};
-        const markup = ReactDOMServer.renderToString(
+export default (assets) => (req, res) =>
+  matchRoutes(routes(), req.url, store)
+    .then(() => {
+      const markup = ReactDOMServer.renderToString(
+        <CookiesProvider cookies={req.universalCookies}>
           <Provider store={store} >
-            <StaticRouter location={req.url} context={context}>
-              <App />
+            <StaticRouter location={req.url} context={{}}>
+              <App isServer />
             </StaticRouter>
           </Provider>
-        );
-        const helmet = Helmet.renderStatic();
+        </CookiesProvider>
+      );
+      const helmet = Helmet.renderStatic();
 
-        res.status(200).send(Template({
-          markup,
-          helmet,
-          assets,
-        }));
-      })
-      .catch(err => res.json(err));
-  };
+      res.status(200).send(Template({
+        markup,
+        helmet,
+        assets,
+      }));
+    })
+    .catch(err => res.json(err));
