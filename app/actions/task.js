@@ -9,7 +9,7 @@ export const onAddTasks = (data) => (dispatch) => {
 
   return axios.get('/api/v1.0.0/tasks')
     .then((res) => res.data)
-    .then(({ tasks }) => ({ tasks: tasks.reduce((obj, item) => ({ ...obj, [item._id]: item }), {}) })) //eslint-disable-line
+    .then(({ tasks }) => ({ tasks: tasks.reduce((obj, item) => ({ ...obj, [item._id]: item }), {}) }))//eslint-disable-line
     .then(({ tasks }) => dispatch({ tasks, type: ADD_TASKS_LIST }))
     .catch((err) => dispatch({ tasks: {}, err, type: ADD_TASKS_LIST }));
 };

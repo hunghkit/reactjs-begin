@@ -1,9 +1,10 @@
 import fs from 'fs';
 import path from 'path';
 import mongoose from 'mongoose';
+mongoose.Promise = global.Promise;
 
 const uristring = process.env.MONGODB_URI || 'mongodb://localhost/reactjs-begin';
-mongoose.connect(uristring, (err) => console.log(err ? `ERROR connecting to: ${uristring}. ${err}` : `Succeeded connected to: ${uristring}`));
+mongoose.connect(uristring, {useMongoClient: true});
 
 const db = {};
 

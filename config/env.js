@@ -13,7 +13,7 @@ if (!NODE_ENV) {
 }
 
 // https://github.com/bkeepers/dotenv#what-other-env-files-can-i-use
-var dotenvFiles = [
+const dotenvFiles = [
   `${paths.dotenv}.${NODE_ENV}.local`,
   `${paths.dotenv}.${NODE_ENV}`,
   // Don't include `.env.local` for `test` environment
@@ -63,17 +63,17 @@ function getClientEnvironment(publicUrl) {
         env[key] = process.env[key];
         return env;
       },
-      {
+    {
         // Useful for determining whether we’re running in production mode.
         // Most importantly, it switches React into the correct mode.
-        NODE_ENV: process.env.NODE_ENV || 'development',
-        BASE_URL: process.env.BASE_URL || '/',
+      NODE_ENV: process.env.NODE_ENV || 'development',
+      BASE_URL: process.env.BASE_URL || '/',
         // Useful for resolving the correct path to static assets in `public`.
         // For example, <img src={process.env.PUBLIC_URL + '/img/logo.png'} />.
         // This should only be used as an escape hatch. Normally you would put
         // images into the `src` and `import` them in code to get their paths.
-        PUBLIC_URL: publicUrl,
-      }
+      PUBLIC_URL: publicUrl,
+    }
     );
   // Stringify all values so we can feed into Webpack DefinePlugin
   const stringified = {
