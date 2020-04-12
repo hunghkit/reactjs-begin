@@ -21,7 +21,7 @@
     "jsonwebtoken": "^8.1.0",
     "md5": "^2.2.1",
     "method-override": "^2.3.9",
-    "mongoose": "^4.11.5",
+    "mongoose": "^5.7.5",
     "morgan": "^1.8.2",
     "prop-type": "^0.0.1",
     "randomstring": "^1.1.5",
